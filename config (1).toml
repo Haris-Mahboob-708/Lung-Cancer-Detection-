@@ -1,9 +1,0 @@
-[server]
-headless = true
-maxUploadSize = 50        # MB; default 200 MB is overkill for 10-column CSVs
-
-[browser]
-gatherUsageStats = false  # disables telemetry ping on startup
-
-[runner]
-fastReruns = true         # skip full re-run on identical state (Streamlit 1.28+)
