@@ -1,0 +1,16 @@
+# Inference-only dependencies for the CC+RF clinical app.
+# All versions pinned to exact releases with pre-built CPython 3.11 wheels.
+# Rationale: loose ranges force the resolver to search; exact pins resolve
+# in ~1s and ensure reproducible rebuilds.
+#
+# DO NOT add boruta / imbalanced-learn — training-time only.
+# DO NOT upgrade to numpy>=2 until shap>=0.46 is tested against this bundle.
+
+streamlit==1.35.0
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.4.2
+joblib==1.4.2
+matplotlib==3.8.4
+plotly==5.22.0
+shap==0.45.1
