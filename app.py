@@ -704,15 +704,6 @@ def render_hero():
                 <div style="display:flex;flex-direction:column;align-items:flex-end;
                             gap:4px;margin-left:24px;flex-shrink:0">
                     {dna_helix_svg(width=180, height=60)}
-                    <div style="color:#93C5FD;font-size:10px;letter-spacing:0.08em">
-                        NUST · 2026 · §6.5.2
-                    </div>
-                </div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
 
 
 # ╔══════════════════════════════════════════════════════════════════╗
