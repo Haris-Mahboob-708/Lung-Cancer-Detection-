@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Raw expression data — never commit
+GSE137140*.csv
+GSE113486*.csv
+*.tsv
+
+# Outputs from notebook training
+outputs/
+training_log.txt
+*.png
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.idea/
+.vscode/
+
+# NOTE: model_bundle.joblib IS committed (Streamlit Cloud needs it at startup).
+# Bundle is ~75 KB — well below GitHub's 100 MB limit.
