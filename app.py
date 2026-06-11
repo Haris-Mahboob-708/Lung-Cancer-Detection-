@@ -1184,9 +1184,7 @@ def render_manual_tab(bundle, explainer, shap_imp):
         f"<div class='clinical-card'>"
         f"<h4>Manual Patient Entry</h4>"
         f"<small style='color:{SLATE}'>"
-        "Enter expression values for the 10 SHAP-shortlisted miRNAs. "
-        "Defaults are training medians. Fields are ranked by mean |SHAP| (most "
-        "influential miRNAs first)."
+        "Insert signal intensity values or fold change values of the miRNAs."
         "</small></div>",
         unsafe_allow_html=True,
     )
