@@ -831,7 +831,7 @@ def render_hero():
 # ║                  PATIENT REPORT CARD RENDERER                      ║
 # ╚══════════════════════════════════════════════════════════════════╝
 def render_patient_report(result, bundle, panel_inputs, patient_id="Sample-001",
-                          explainer=None, compact=False):
+                          explainer=None, compact=False, key_suffix=""):
     """The full patient-report layout. Used by all input tabs."""
     cal = result["cal_prob"]
     tau = result["tau_star"]
@@ -839,6 +839,12 @@ def render_patient_report(result, bundle, panel_inputs, patient_id="Sample-001",
     is_pos = (verdict == "Cancer-positive")
     sv = result["shap_vals"]
     feats = bundle["feature_names"]
+
+    # Unique key prefix so this report can render more than once per page
+    # (e.g. PATIENT-A and PATIENT-B in the side-by-side comparison tab)
+    # without Streamlit raising StreamlitDuplicateElementId.
+    import re as _re
+    _kp = _re.sub(r"[^A-Za-z0-9_-]", "_", str(patient_id) + str(key_suffix))
 
     # ── Row 1: gauge + verdict tile ───────────────────────────────
     cols = st.columns([1.05, 1.0])
@@ -849,7 +855,7 @@ def render_patient_report(result, bundle, panel_inputs, patient_id="Sample-001",
             unsafe_allow_html=True,
         )
         gauge = render_radial_gauge(cal, tau, is_pos)
-        st.plotly_chart(gauge, use_container_width=True, config={"displayModeBar": False})
+        st.plotly_chart(gauge, use_container_width=True, config={"displayModeBar": False}, key=f"{_kp}_gauge")
         st.markdown("</div>", unsafe_allow_html=True)
     with cols[1]:
         verdict_bg = DANGER_RED_BG if is_pos else OK_GREEN_BG
@@ -997,7 +1003,7 @@ def render_patient_report(result, bundle, panel_inputs, patient_id="Sample-001",
         "<h4>Diagnostic Detail Table</h4>",
         unsafe_allow_html=True,
     )
-    st.dataframe(pd.DataFrame(rel_rows), hide_index=True, use_container_width=True)
+    st.dataframe(pd.DataFrame(rel_rows), hide_index=True, use_container_width=True, key=f"{_kp}_detail_df")
     st.markdown("</div>", unsafe_allow_html=True)
 
 
@@ -1169,7 +1175,7 @@ def render_csv_tab(bundle, explainer, shap_imp):
             row = aligned.iloc[[i]].reset_index(drop=True)
             result = predict_one(row, bundle, explainer)
             render_patient_report(result, bundle, row, patient_id=pid,
-                                    explainer=explainer)
+                                    explainer=explainer, key_suffix=f"_{i}")
     if len(out) > 25:
         st.info(f"Detailed reports shown for first 25 samples. "
                 f"Full predictions for all {len(out)} are in the table above.")
