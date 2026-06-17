@@ -1,16 +1,15 @@
-# Inference-only dependencies for the CC+RF clinical app.
-# All versions pinned to exact releases with pre-built CPython 3.11 wheels.
-# Rationale: loose ranges force the resolver to search; exact pins resolve
-# in ~1s and ensure reproducible rebuilds.
-#
-# DO NOT add boruta / imbalanced-learn — training-time only.
-# DO NOT upgrade to numpy>=2 until shap>=0.46 is tested against this bundle.
+# ── Unpickling-critical: must be present and version-compatible to load model_bundle.joblib ──
+# The bundle contains a CatBoostClassifier (stage2_model) and a scikit-learn
+# LogisticRegression (platt_scaler). Both packages must be importable at joblib.load
+# time, or Streamlit raises ModuleNotFoundError before the app can start.
+catboost==1.2.10
+scikit-learn==1.5.2          # bundle was trained on 1.5.2; pinning avoids cross-version unpickle issues
+numpy<2.0.0                  # 1.x for compatibility with the pinned sklearn/catboost build
 
-streamlit==1.35.0
-numpy==1.26.4
-pandas==2.2.2
-scikit-learn==1.4.2
-joblib==1.4.2
-matplotlib==3.8.4
-plotly==5.22.0
-shap==0.45.1
+# ── App runtime dependencies (imported by app.py) ──
+streamlit>=1.32
+joblib>=1.3
+pandas>=2.0
+matplotlib>=3.7
+plotly>=5.18
+shap==0.45.1                 # 0.45.x works with numpy<2; shap 0.52+ requires numpy>=2 and would break the numpy pin above
